@@ -2,6 +2,7 @@ package com.example.eventbot.utils;
 
 import com.example.eventbot.exceptions.ApplicationException;
 import com.example.eventbot.exceptions.ExceptionDescriptor;
+import com.example.eventbot.model.enums.NotificationLevel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -34,5 +35,14 @@ public class MessageParser {
 
     public Boolean hasUserTag(String text) {
         return text.charAt(0) == '@';
+    }
+
+    public Boolean checkForNotification(String text) throws ApplicationException {
+        try {
+            NotificationLevel.valueOf(text.toUpperCase().trim());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

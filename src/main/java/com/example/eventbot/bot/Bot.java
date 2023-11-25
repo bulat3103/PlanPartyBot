@@ -40,6 +40,11 @@ public class Bot extends TelegramLongPollingBot {
 
                     }
                 }
+            } else if (update.hasCallbackQuery()) {
+                String callBack = update.getCallbackQuery().getData();
+                if (messageParser.checkForNotification(callBack)) {
+                    
+                }
             }
         } catch (ApplicationException e) {
             log.info("catch exception: ({})", e.getException().getMessage());

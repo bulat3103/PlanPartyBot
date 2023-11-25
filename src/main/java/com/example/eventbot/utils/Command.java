@@ -1,5 +1,7 @@
 package com.example.eventbot.utils;
 
 public enum Command {
-    START
+    START,
+    NOTIFICATIONS,
+    CREATE_EVENT
 }
