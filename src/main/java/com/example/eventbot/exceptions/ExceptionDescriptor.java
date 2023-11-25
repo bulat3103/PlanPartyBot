@@ -10,7 +10,8 @@ public enum ExceptionDescriptor {
     INVALID_COMMAND("Команда не найдена", "Invalid command"),
     HANDLER_NOT_FOUND("Что-то пошло не так", "Handler not found"),
     NO_INFO_ERROR("К сожалению, мы еще не знакомы, воспользуйтесь командой /start, чтобы начать пользоваться ботом", "User not registered"),
-    JOIN_ERROR("Неверный код, введите четырехзначный код из чата", "Invalid join data");
+    JOIN_ERROR("Неверный код, введите четырехзначный код из чата", "Invalid join data"),
+    APPLICATION_ERROR("Что-то пошло не так", "Invalid input data");
 
     private final String responseText;
 

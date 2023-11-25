@@ -1,7 +1,7 @@
 package com.example.eventbot.model.ids;
 
 import com.example.eventbot.model.Task;
-import com.example.eventbot.model.User;
+import com.example.eventbot.model.UserEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,9 +22,9 @@ public class WishTaskId implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User userId;
+    private UserEntity userId;
 
-    public WishTaskId(Task taskId, User userId) {
+    public WishTaskId(Task taskId, UserEntity userId) {
         this.taskId = taskId;
         this.userId = userId;
     }

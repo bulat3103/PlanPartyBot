@@ -1,6 +1,5 @@
 package com.example.eventbot.model;
 
-import com.example.eventbot.model.ids.ChatUsersId;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,15 +10,19 @@ import javax.persistence.*;
 @Table(name = "chat_user")
 @NoArgsConstructor
 public class ChatUser {
-    @EmbeddedId
-    private ChatUsersId id;
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "chat_id")
+    private ChatEntity chat;
+
+    @ManyToOne
+    @JoinColumn(name = "chat_id")
+    private UserEntity user;
 
     @ManyToOne
     @Column(name = "role_id")
-    private Role roleId;
-
-    public ChatUser(ChatUsersId id, Role roleId) {
-        this.id = id;
-        this.roleId = roleId;
-    }
+    private Role role;
 }

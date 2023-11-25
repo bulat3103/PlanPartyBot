@@ -28,5 +28,5 @@ public class Event {
 
     @ManyToOne
     @Column(name = "chat_id")
-    private Chat chatId;
+    private ChatEntity chatId;
 }

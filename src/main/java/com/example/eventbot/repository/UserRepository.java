@@ -1,7 +1,12 @@
 package com.example.eventbot.repository;
 
-import com.example.eventbot.model.User;
+import com.example.eventbot.model.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
+    Optional<UserEntity> findUserEntityByTelegramId(Long telegramId);
+
+    Optional<UserEntity> findUserEntityByUserTag(String userTag);
 }

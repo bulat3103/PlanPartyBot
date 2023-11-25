@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class ChatDto {
     private Long telegramId;
-    private String userTag;
-    private String name;
-    private String surname;
+    private Integer code;
 }
