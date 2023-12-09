@@ -17,7 +17,7 @@ public class NotificationSender {
     private final UserService userService;
     private final ChatService chatService;
 
-    @Scheduled(cron = "0 0 0/1 ? * * *")
+    @Scheduled(cron = "0 0 0/1 ? * *")
     public void check() throws ApplicationException {
         log.info("start checking notificatinos");
     }

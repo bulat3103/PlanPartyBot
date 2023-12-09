@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Table(name = "event")
 public class Event {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name")
@@ -27,6 +27,10 @@ public class Event {
     private LocalDate until;
 
     @ManyToOne
-    @Column(name = "chat_id")
+    @JoinColumn(name = "chat_id")
     private ChatEntity chatId;
+
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private UserEntity adminId;
 }

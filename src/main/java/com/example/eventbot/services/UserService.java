@@ -7,6 +7,7 @@ import com.example.eventbot.model.ChatUser;
 import com.example.eventbot.model.UserEntity;
 import com.example.eventbot.model.dto.UserDto;
 import com.example.eventbot.repository.ChatRepository;
+import com.example.eventbot.repository.ChatUserRepository;
 import com.example.eventbot.repository.UserRepository;
 import com.example.eventbot.utils.MapStructMapper;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,10 @@ public class UserService {
 
     public Boolean checkByTag(String userTag) {
         return userRepository.findUserEntityByUserTag(userTag).isPresent();
+    }
+
+    public UserEntity getByTag(String userTag) throws ApplicationException {
+        return userRepository.findUserEntityByUserTag(userTag).orElseThrow(ExceptionDescriptor.APPLICATION_ERROR::exception);
     }
 
     @Transactional

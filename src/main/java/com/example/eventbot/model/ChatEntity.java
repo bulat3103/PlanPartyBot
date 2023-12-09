@@ -12,7 +12,7 @@ import java.util.Set;
 @Table(name = "chat")
 public class ChatEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "telegramId")

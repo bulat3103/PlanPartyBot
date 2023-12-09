@@ -32,9 +32,9 @@ public class StartCommandStrategy implements CommandStrategy {
             if (!userService.checkUser(message.getFrom().getId())) {
                 UserDto userDto = mapper.mapToUserDto(message.getFrom());
                 userService.create(userDto);
-                answer = Answers.START_IN_CHAT;
+                answer = Answers.START_IN_PRIVATE;
             } else {
-                answer = "Вы уже привязаны к чату";
+                answer = "Ты уже зарегистрирован! Бот знает о тебе:)";
             }
         } else {
             answer = Answers.START_IN_CHAT;

@@ -33,6 +33,11 @@ public class MessageParser {
         return text.trim().matches(regEx);
     }
 
+    public Boolean hasDate(String text) {
+        String regEx = "[0-9]{2}.[0-9]{2}.[0-9]{4}";
+        return text.trim().matches(regEx);
+    }
+
     public Boolean hasUserTag(String text) {
         return text.charAt(0) == '@';
     }

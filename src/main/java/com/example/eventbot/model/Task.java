@@ -11,15 +11,15 @@ import javax.persistence.*;
 @Table(name = "tasks")
 public class Task {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @Column(name = "event_id")
+    @JoinColumn(name = "event_id")
     private Event eventId;
 
     @ManyToOne
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id")
     private UserEntity userId;
 
     @Column(name = "name")

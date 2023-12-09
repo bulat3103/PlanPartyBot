@@ -18,7 +18,6 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class ChatService {
     private final ChatRepository chatRepository;
-    private final MapStructMapper mapper;
     private final BotConfig botConfig;
 
     public Boolean checkChat(Long telegramId) {
@@ -36,9 +35,12 @@ public class ChatService {
         chatRepository.save(chat);
     }
 
-    public ChatDto getChat(Long telegramId) throws ApplicationException {
-        ChatEntity chat = chatRepository.findChatEntityByTelegramId(telegramId).orElseThrow(ExceptionDescriptor.APPLICATION_ERROR::exception);
-        return mapper.mapToChatDto(chat);
+    public ChatEntity getChat(Long telegramId) throws ApplicationException {
+        return chatRepository.findChatEntityByTelegramId(telegramId).orElseThrow(ExceptionDescriptor.APPLICATION_ERROR::exception);
+    }
+
+    public ChatEntity getChatByCode(Integer code) throws ApplicationException {
+        return chatRepository.findChatEntityByCode(code).orElseThrow(ExceptionDescriptor.APPLICATION_ERROR::exception);
     }
 
     public Integer generateCode() {

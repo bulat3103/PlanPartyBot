@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class ChatUser {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -19,10 +19,6 @@ public class ChatUser {
     private ChatEntity chat;
 
     @ManyToOne
-    @JoinColumn(name = "chat_id")
+    @JoinColumn(name = "user_id")
     private UserEntity user;
-
-    @ManyToOne
-    @Column(name = "role_id")
-    private Role role;
 }

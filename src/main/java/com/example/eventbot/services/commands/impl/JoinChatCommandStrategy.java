@@ -14,11 +14,11 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CreateEventCommandStrategy implements CommandStrategy {
+public class JoinChatCommandStrategy implements CommandStrategy {
     private final UserService userService;
     @Override
     public SendMessage invokeCommand(Message message) throws ApplicationException {
-        log.info("invoke command CREATE_EVENT: ({}, {})", message.getChatId(), message.getFrom().getUserName());
+        log.info("invoke command JOIN_CHAT: ({}, {})", message.getChatId(), message.getFrom().getUserName());
         ExceptionDescriptor.INVALID_COMMAND.throwIfFalse(message.getChat().getType().equals("private"));
         String answer;
         if (!userService.checkUser(message.getFrom().getId())) {
@@ -35,6 +35,6 @@ public class CreateEventCommandStrategy implements CommandStrategy {
 
     @Override
     public Command getSupportedCommand() {
-        return Command.EVENT;
+        return Command.JOIN;
     }
 }

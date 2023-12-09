@@ -14,7 +14,7 @@ public class MapStructMapper {
         userDto.setTelegramId(user.getId());
         userDto.setUserTag(user.getUserName());
         userDto.setName(user.getFirstName());
-        userDto.setSurname(userDto.getSurname());
+        userDto.setSurname(user.getLastName());
         return userDto;
     }
 
