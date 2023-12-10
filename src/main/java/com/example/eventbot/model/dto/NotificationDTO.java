@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor(staticName = "of")
+@AllArgsConstructor
 public class NotificationDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = -1543657656858678L;
