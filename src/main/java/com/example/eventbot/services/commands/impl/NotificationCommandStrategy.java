@@ -27,8 +27,7 @@ public class NotificationCommandStrategy implements CommandStrategy {
     @Override
     public SendMessage invokeCommand(Message message) throws ApplicationException {
         log.info("invoke command NOTIFICATIONS: ({}, {})", message.getChatId(), message.getFrom().getUserName());
-        //TODO проверить, что отправляет пользователь, который создал событие
-        ExceptionDescriptor.INVALID_COMMAND.throwIfFalse(message.getChat().getType().equals("private"));
+        ExceptionDescriptor.INVALID_COMMAND.throwIfTrue(message.getChat().getType().equals("private"));
         ExceptionDescriptor.NO_INFO_ERROR.throwIfFalse(userService.checkUser(message.getFrom().getId()));
 
         String answer = Answers.NOTIFICATION_CHOICE;
@@ -37,11 +36,10 @@ public class NotificationCommandStrategy implements CommandStrategy {
                 .text(answer)
                 .build();
         Map<String, String> buttons = new HashMap<>();
-        buttons.put("1 раз в день", NotificationLevel.ONE_TIME_DAY.name());
-        buttons.put("2 раза в день", NotificationLevel.TWO_TIME_DAY.name());
-        buttons.put("3 раза в день", NotificationLevel.THREE_TIME_DAY.name());
-        buttons.put("1 раз в 2 дня", NotificationLevel.ONE_TIME_TWO_DAY.name());
-        buttons.put("1 раз в неделю", NotificationLevel.ONE_TIME_WEEK.name());
+        buttons.put("Раз в день", NotificationLevel.DAY.name());
+        buttons.put("Раз в 2 дня", NotificationLevel.TWO_DAY.name());
+        buttons.put("Раз в 3 дня", NotificationLevel.THREE_DAY.name());
+        buttons.put("Раз в неделю", NotificationLevel.WEEK.name());
         answerMessage.setReplyMarkup(keyboardBuilder.getButtonList(buttons));
         return answerMessage;
     }

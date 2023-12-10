@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Getter
@@ -25,6 +26,9 @@ public class Event {
 
     @Column(name = "until")
     private LocalDate until;
+
+    @Column(name = "last_notification")
+    private Timestamp lastNotify;
 
     @ManyToOne
     @JoinColumn(name = "chat_id")

@@ -33,6 +33,7 @@ public class Bot extends TelegramLongPollingBot {
     private final Map<Long, Command> previousUserCommand = new HashMap<>();
     private final Map<Long, CreateEventDto> userEventDto = new HashMap<>();
     private final Map<Long, Event> wishEvent = new HashMap<>();
+    private final Map<Long, Event> finishEvent = new HashMap<>();
 
     @Override
     @SneakyThrows
@@ -85,12 +86,20 @@ public class Bot extends TelegramLongPollingBot {
                     } else if (previousUserCommand.get(update.getMessage().getFrom().getId()).equals(Command.WISH)) {
                         actionService.setWish(update.getMessage(), wishEvent.get(update.getMessage().getFrom().getId()));
                         wishEvent.remove(update.getMessage().getFrom().getId());
+                    } else if (previousUserCommand.get(update.getMessage().getFrom().getId()).equals(Command.FINISH_TASK)
+                            && messageParser.hasCode(text))
+                    {
+                        Event event = actionService.getTaskForFinish(update.getMessage());
+                        finishEvent.put(update.getMessage().getFrom().getId(), event);
+                    } else if (previousUserCommand.get(update.getMessage().getFrom().getId()).equals(Command.FINISH_TASK)) {
+                        actionService.setFinish(update.getMessage(), finishEvent.get(update.getMessage().getFrom().getId()));
+                        finishEvent.remove(update.getMessage().getFrom().getId());
                     }
                 }
             } else if (update.hasCallbackQuery()) {
                 String callBack = update.getCallbackQuery().getData();
                 if (messageParser.checkForNotification(callBack)) {
-
+                    actionService.setNotificationLevel(update, callBack);
                 }
             }
         } catch (ApplicationException e) {

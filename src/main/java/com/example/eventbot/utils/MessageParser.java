@@ -38,10 +38,6 @@ public class MessageParser {
         return text.trim().matches(regEx);
     }
 
-    public Boolean hasUserTag(String text) {
-        return text.charAt(0) == '@';
-    }
-
     public Boolean checkForNotification(String text) throws ApplicationException {
         try {
             NotificationLevel.valueOf(text.toUpperCase().trim());

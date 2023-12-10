@@ -1,9 +1,18 @@
 package com.example.eventbot.model.enums;
 
 public enum NotificationLevel {
-    ONE_TIME_DAY,
-    TWO_TIME_DAY,
-    THREE_TIME_DAY,
-    ONE_TIME_WEEK,
-    ONE_TIME_TWO_DAY;
+    DAY("раз в день"),
+    TWO_DAY("раз в 2 дня"),
+    THREE_DAY("раз в 3 дня"),
+    WEEK("раз в неделю");
+
+    private String desc;
+
+    NotificationLevel(String desc) {
+        this.desc = desc;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
 }

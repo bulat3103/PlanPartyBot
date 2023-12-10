@@ -7,5 +7,6 @@ public enum Command {
     CODE,
     JOIN,
     WISH,
-    SET_TASKS
+    SET_TASKS,
+    FINISH_TASK
 }

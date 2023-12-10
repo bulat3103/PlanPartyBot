@@ -30,7 +30,7 @@ public class SetTasksCommandStrategy implements CommandStrategy {
         ExceptionDescriptor.INVALID_COMMAND.throwIfTrue(message.getChat().getType().equals("private"));
         ChatEntity chat = chatService.getChat(message.getChatId());
         Event event = eventService.getByChat(chat);
-        if (!event.getAdminId().equals(userService.getByTag(message.getFrom().getUserName()))) {
+        if (event.getAdminId().getId() != userService.getByTag(message.getFrom().getUserName()).getId()) {
             return SendMessage
                     .builder()
                     .chatId(message.getChatId())
@@ -47,6 +47,17 @@ public class SetTasksCommandStrategy implements CommandStrategy {
         for (Task task : allTasks) {
             List<TaskToSort> sort = new ArrayList<>();
             for (ChatUser chatUser : chatUsers) {
+                if (wish.get(chatUser.getUser()).size() == 0) {
+                    int min = 1;
+                    int max = allTasks.size() - min;
+                    int random = (int) (Math.random() * (max + 1)) + min;
+                    sort.add(new TaskToSort(
+                            random,
+                            countTasksByUser.getOrDefault(chatUser.getUser(), 0),
+                            chatUser.getUser()
+                    ));
+                    continue;
+                }
                 WishTask wishTask = wish.get(chatUser.getUser()).stream().filter(t -> t.getId().getTaskId().equals(task)).findFirst().get();
                 sort.add(new TaskToSort(
                         wishTask.getOrdinal(),

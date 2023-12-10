@@ -53,7 +53,7 @@ public class ActionService {
         ChatEntity chat = chatService.getChatByCode(dto.getChatCode());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         LocalDate date = LocalDate.parse(dto.getDate(), formatter);
-        Event event = eventService.create(dto.getName(), NotificationLevel.ONE_TIME_DAY, date, chat, user);
+        Event event = eventService.create(dto.getName(), NotificationLevel.DAY, date, chat, user);
         String[] tasks = dto.getListOfWork().split("\n");
         for (int i = 0; i < tasks.length; i++) {
             taskService.create(event, tasks[i], i + 1);
@@ -89,8 +89,41 @@ public class ActionService {
         return event;
     }
 
+    public Event getTaskForFinish(Message message) throws TelegramApiException {
+        log.info("invoke getTaskForFinish: ({}, {})", message.getChatId(), message.getFrom().getUserName());
+        ExceptionDescriptor.NO_INFO_ERROR.throwIfFalse(userService.checkUser(message.getFrom().getId()));
+        ExceptionDescriptor.JOIN_ERROR.throwIfFalse(chatService.checkCode(Integer.valueOf(message.getText().trim())));
+        ChatEntity chat = chatService.getChatByCode(Integer.valueOf(message.getText().trim()));
+        Event event = eventService.getByChat(chat);
+        List<Task> tasks = taskService.getAllTasksByEvent(event);
+        String answer = "Список дел:\n";
+        for (Task task : tasks) {
+            if (task.getDone()) continue;
+            answer += task.getOrdinal() + ". " + task.getName() + "\n";
+        }
+        answer += "Введите номер задачи, которую вы завершили:";
+        messageExecutor.sendDefaultMessage(SendMessage.builder()
+                .chatId(message.getChatId())
+                .text(answer)
+                .build());
+        return event;
+    }
+
+    public void setFinish(Message message, Event event) throws TelegramApiException {
+        log.info("invoke setFinish: ({}, {})", message.getChatId(), message.getFrom().getUserName());
+        ExceptionDescriptor.NO_INFO_ERROR.throwIfFalse(userService.checkUser(message.getFrom().getId()));
+        List<Task> tasks = taskService.getAllTasksByEvent(event);
+        Task task = tasks.stream().filter(t -> t.getOrdinal() == Integer.parseInt(message.getText().trim())).findFirst().get();
+        task.setDone(true);
+        taskService.update(task);
+        messageExecutor.sendDefaultMessage(SendMessage.builder()
+                .chatId(message.getChatId())
+                .text("Задача завершена! Спасибо!")
+                .build());
+    }
+
     public void setWish(Message message, Event event) throws TelegramApiException {
-        log.info("invoke getAllTasksForEvent: ({}, {})", message.getChatId(), message.getFrom().getUserName());
+        log.info("invoke setWish: ({}, {})", message.getChatId(), message.getFrom().getUserName());
         ExceptionDescriptor.NO_INFO_ERROR.throwIfFalse(userService.checkUser(message.getFrom().getId()));
         UserEntity user = userService.getByTag(message.getFrom().getUserName());
         String[] tasksIds = message.getText().trim().split(",");
@@ -112,11 +145,15 @@ public class ActionService {
         Long userTelegramId = update.getCallbackQuery().getFrom().getId();
         ExceptionDescriptor.NO_INFO_ERROR.throwIfFalse(userService.checkUser(userTelegramId));
         NotificationLevel newLevel = NotificationLevel.valueOf(callBackData);
-        String answer = "Настройки уведомлений изменены";
+        String answer = "Настройки уведомлений изменены! Теперь вы будете получать сообщения " + newLevel.getDesc();
         Long chatTelegramId = update.getCallbackQuery().getMessage().getChatId();
+        ChatEntity chat = chatService.getChat(chatTelegramId);
+        Event event = eventService.getByChat(chat);
+        event.setLevel(newLevel);
+        eventService.update(event);
 
         EditMessageText message = new EditMessageText();
-        message.setChatId(userTelegramId);
+        message.setChatId(chatTelegramId);
         message.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
         message.setText(answer);
 
