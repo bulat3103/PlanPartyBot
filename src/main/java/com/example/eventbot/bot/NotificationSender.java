@@ -32,13 +32,10 @@ public class NotificationSender {
     private final MessageProducer producer;
     private final Session session;
 
-    @Scheduled(cron = "0 0 0/1 ? * *")
+    @Scheduled(fixedRate = 1_800_000)
     public void check() throws JMSException {
         log.info("start checking notificatinos");
         sendNotificationsByLevel(NotificationLevel.DAY);
-        sendNotificationsByLevel(NotificationLevel.TWO_DAY);
-        sendNotificationsByLevel(NotificationLevel.THREE_DAY);
-        sendNotificationsByLevel(NotificationLevel.WEEK);
     }
 
     public void sendNotificationsByLevel(NotificationLevel level) throws JMSException {
