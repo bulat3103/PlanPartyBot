@@ -20,7 +20,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -95,7 +97,7 @@ public class ActionService {
         ExceptionDescriptor.JOIN_ERROR.throwIfFalse(chatService.checkCode(Integer.valueOf(message.getText().trim())));
         ChatEntity chat = chatService.getChatByCode(Integer.valueOf(message.getText().trim()));
         Event event = eventService.getByChat(chat);
-        List<Task> tasks = taskService.getAllTasksByEvent(event);
+        List<Task> tasks = taskService.getAllTasksByEvent(event).stream().filter(task -> Objects.equals(task.getUserId().getTelegramId(), message.getFrom().getId())).collect(Collectors.toList());
         String answer = "Список дел:\n";
         for (Task task : tasks) {
             if (task.getDone()) continue;

@@ -47,4 +47,8 @@ public class EventService {
     public void update(Event event) {
         eventRepository.save(event);
     }
+
+    public void delete(Event event) {
+        eventRepository.delete(event);
+    }
 }

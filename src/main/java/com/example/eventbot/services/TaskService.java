@@ -31,4 +31,8 @@ public class TaskService {
     public List<Task> getAllTasksByEvent(Event event) {
         return taskRepository.findAllByEventId(event);
     }
+
+    public void delete(Task task) {
+        taskRepository.delete(task);
+    }
 }

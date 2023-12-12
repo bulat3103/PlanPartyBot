@@ -8,5 +8,6 @@ public enum Command {
     JOIN,
     WISH,
     SET_TASKS,
-    FINISH_TASK
+    FINISH_TASK,
+    FINISH_EVENT
 }

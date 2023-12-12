@@ -29,6 +29,7 @@ public class MessageParser {
     }
 
     public Boolean hasCode(String text) {
+        if (text.length() != 4) return false;
         String regEx = "\\d*";
         return text.trim().matches(regEx);
     }

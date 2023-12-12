@@ -30,4 +30,8 @@ public class WishTaskService {
     public List<WishTask> getTasksByUser(UserEntity user, Event event) {
         return wishTaskRepository.getWishTasksByUser(user.getId()).stream().filter(t -> t.getId().getTaskId().getEventId().equals(event)).collect(Collectors.toList());
     }
+
+    public void deleteAllByTaskId(Task task) {
+        wishTaskRepository.deleteAllByTaskId(task.getId());
+    }
 }

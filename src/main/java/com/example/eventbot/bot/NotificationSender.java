@@ -36,12 +36,19 @@ public class NotificationSender {
     public void check() throws JMSException {
         log.info("start checking notificatinos");
         sendNotificationsByLevel(NotificationLevel.DAY);
+        sendNotificationsByLevel(NotificationLevel.TWO_DAY);
+        sendNotificationsByLevel(NotificationLevel.THREE_DAY);
+        sendNotificationsByLevel(NotificationLevel.WEEK);
     }
 
     public void sendNotificationsByLevel(NotificationLevel level) throws JMSException {
         Timestamp now = Timestamp.from(Instant.now());
         List<Event> events = eventService.getByNotificationLevel(now, level);
         for (Event event : events) {
+            long nowMillis = now.getTime();
+            long lastNotifyMillis = event.getLastNotify().getTime();
+            long diffDays = (nowMillis - lastNotifyMillis) / (24 * 60 * 60 * 1000);
+            if (diffDays < level.getDays()) return;
             List<Task> tasks = taskService.getAllTasksByEvent(event);
             for (Task task : tasks) {
                 if (task.getDone()) continue;
